@@ -1,7 +1,7 @@
 
-//  © Michael Schoenenberger, June 2017 (Vinz is not allowed to copy©)
+//  © Michael Schoenenberger, June 2017
 
-//standard Values
+// Default Values
 var portrait = false,
     pHeight = 297,
     pWidth = 210, 
