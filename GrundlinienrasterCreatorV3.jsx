@@ -1,21 +1,21 @@
 
 //  © Michael Schoenenberger, June 2017
 
-// Default Values
+// Default Values (A4 Portrait)
 var portrait = false,
-    pHeight = 297,
-    pWidth = 210, 
+    pageHeight = 297,
+    pageWidth = 210,
     orientation,
-    rasterAnfang = 15,
-    rasterLinks = 10,
-    rasterRechts = 10,
-    zeilen = 6,
-    spalten = 4,
-    anzSpaltenProSpaltenAbstand = 1,
-    zeilenAbstand = 5,
+    upperPadding = 15,
+    innerPadding = 10,
+    outterPadding = 10,
+    numberOfRows = 6,
+    numberOfCollums = 4,
+    rowsGutterWidthInLines = 1,              // Amount of base line grid lines
+    customColumnGutterWidth = 5,
     fontSize = 9,
-    rasterHoehe = fontSize*1.2,
-    letterMsize = 2.286;
+    baseLineGridHeight = fontSize * 1.2,
+    fontMsize = 2.286;
 
 var spaltenAbstand,
     _height = 0,
@@ -70,11 +70,11 @@ function defineStartDialog(){
                             //Create a number entry field. Note that this field uses editValue
                             //rather than editText (as a textEditBox would).
                             format = dropdowns.add({                    stringList: ["A0", "B0", "C0", "A1", "B1", "C1", "A2", "B2", "C2", "A3", "B3", "C3", "A4", "B4", "C4", "A5", "B5", "C5", "A6", "B6", "C6", "A7", "B7", "C7", "A8", "B8", "C8", "A9", "B9", "C9", "A10", "B10", "C10"],
-                                                                        selectedIndex: 12, 
+                                                                        selectedIndex: 12,
                                                                         minWidth: min_width_right });
 
-                            orientation = dropdowns.add({               stringList: ["Portrait", "Landscape"], 
-                                                                        selectedIndex: 0, 
+                            orientation = dropdowns.add({               stringList: ["Portrait", "Landscape"],
+                                                                        selectedIndex: 0,
                                                                         minWidth: min_width_right });
                         }
                     }
@@ -85,12 +85,12 @@ function defineStartDialog(){
                             staticTexts.add({ staticLabel: "Page Width:", minWidth: min_width_left });
                         }
                         with (dialogColumns.add()) {
-                            pHeight     = measurementEditboxes.add({    editValue: pHeight * 2.83465, 
-                                                                        editUnits:MeasurementUnits.millimeters, 
+                            pageHeight     = measurementEditboxes.add({    editValue: pageHeight * 2.83465,
+                                                                        editUnits:MeasurementUnits.millimeters,
                                                                         minWidth: min_width_right});
 
-                            pWidth      = measurementEditboxes.add({    editValue: pWidth * 2.83465, 
-                                                                        editUnits:MeasurementUnits.millimeters, 
+                            pageWidth      = measurementEditboxes.add({    editValue: pageWidth * 2.83465,
+                                                                        editUnits:MeasurementUnits.millimeters,
                                                                         minWidth: min_width_right});
                         }
                     }
@@ -104,16 +104,16 @@ function defineStartDialog(){
                         with(dialogColumns.add()) {
                             //Create a number entry field. Note that this field uses editValue
                             //rather than editText (as a textEditBox would).
-                            rasterAnfang    = measurementEditboxes.add({    editValue: rasterAnfang * 2.83465, 
-                                                                            editUnits:MeasurementUnits.millimeters, 
+                            upperPadding    = measurementEditboxes.add({    editValue: upperPadding * 2.83465,
+                                                                            editUnits:MeasurementUnits.millimeters,
                                                                             minWidth: min_width_right});
 
-                            rasterLinks     = measurementEditboxes.add({    editValue: rasterLinks * 2.83465, 
-                                                                            editUnits:MeasurementUnits.millimeters, 
+                            innerPadding     = measurementEditboxes.add({    editValue: innerPadding * 2.83465,
+                                                                            editUnits:MeasurementUnits.millimeters,
                                                                             minWidth: min_width_right});
 
-                            rasterRechts    = measurementEditboxes.add({    editValue: rasterRechts * 2.83465, 
-                                                                            editUnits:MeasurementUnits.millimeters, 
+                            outterPadding    = measurementEditboxes.add({    editValue: outterPadding * 2.83465,
+                                                                            editUnits:MeasurementUnits.millimeters,
                                                                             minWidth: min_width_right});
                         }
                     }
@@ -127,24 +127,24 @@ function defineStartDialog(){
                         with(dialogColumns.add()) {
                             //Create a number entry field. Note that this field uses editValue
                             //rather than editText (as a textEditBox would).
-                            zeilen                          = integerEditboxes.add({    editValue: zeilen, 
-                                                                                        largeNudge: 50, 
-                                                                                        smallNudge: zeilen, 
-                                                                                        minimumValue: 0, 
+                            numberOfRows                         = integerEditboxes.add({    editValue: numberOfRows,
+                                                                                        largeNudge: 50,
+                                                                                        smallNudge: numberOfRows,
+                                                                                        minimumValue: 0,
                                                                                         maximumValue: 200,
                                                                                         minWidth: min_width_right});
 
-                            spalten                         = integerEditboxes.add({    editValue: spalten,
-                                                                                        largeNudge: 50, 
-                                                                                        smallNudge: spalten, 
-                                                                                        minimumValue: 0, 
+                            numberOfCollums                         = integerEditboxes.add({    editValue: numberOfCollums,
+                                                                                        largeNudge: 50,
+                                                                                        smallNudge: numberOfCollums,
+                                                                                        minimumValue: 0,
                                                                                         maximumValue: 200,
                                                                                         minWidth: min_width_right});
 
-                            anzSpaltenProSpaltenAbstand     = integerEditboxes.add({    editValue: anzSpaltenProSpaltenAbstand,
-                                                                                        largeNudge: 50, 
-                                                                                        smallNudge: anzSpaltenProSpaltenAbstand, 
-                                                                                        minimumValue: 0, 
+                            rowsGutterWidthInLines     = integerEditboxes.add({    editValue: rowsGutterWidthInLines,
+                                                                                        largeNudge: 50,
+                                                                                        smallNudge: rowsGutterWidthInLines,
+                                                                                        minimumValue: 0,
                                                                                         maximumValue: 100,
                                                                                         minWidth: min_width_right});
                         }
@@ -155,8 +155,8 @@ function defineStartDialog(){
                             staticTexts.add( {staticLabel: "Row Gutter Width:", minWidth: min_width_left} );
                         }
                         with (dialogColumns.add()) {
-                            zeilenAbstand = measurementEditboxes.add({  editValue: zeilenAbstand * 2.83465, 
-                                                                        editUnits:MeasurementUnits.millimeters, 
+                            customColumnGutterWidth = measurementEditboxes.add({  editValue: customColumnGutterWidth * 2.83465,
+                                                                        editUnits:MeasurementUnits.millimeters,
                                                                         minWidth: min_width_right});
                         }
                     }
@@ -170,14 +170,14 @@ function defineStartDialog(){
                         with(dialogColumns.add()) {
                             //Create a number entry field. Note that this field uses editValue
                             //rather than editText (as a textEditBox would).
-                            fontSize    = measurementEditboxes.add({    editValue: fontSize, 
-                                                                        editUnits:MeasurementUnits.points, 
+                            fontSize    = measurementEditboxes.add({    editValue: fontSize,
+                                                                        editUnits:MeasurementUnits.points,
                                                                         minWidth: min_width_right});
-                            rasterHoehe = measurementEditboxes.add({    editValue: rasterHoehe, 
-                                                                        editUnits:MeasurementUnits.points, 
+                            baseLineGridHeight = measurementEditboxes.add({    editValue: baseLineGridHeight,
+                                                                        editUnits:MeasurementUnits.points,
                                                                         minWidth: min_width_right});
-                            letterMsize = measurementEditboxes.add({    editValue: letterMsize * 2.83465, 
-                                                                        editUnits:MeasurementUnits.millimeters, 
+                            fontMsize = measurementEditboxes.add({    editValue: fontMsize * 2.83465,
+                                                                        editUnits:MeasurementUnits.millimeters,
                                                                         minWidth: min_width_right});
                         }
                     }
@@ -199,7 +199,7 @@ function defineEndDialog(){
                             //rather than editText (as a textEditBox would).
                             defNumber = radiobuttonGroups.add();
                             with(defNumber) {
-                                
+
                                 radiobuttonControls.add({staticLabel: rasterEndeChoices[0].toFixed(2) + " mm", checkedState: true, minWidth: min_width_right});
 
                                 for (var i = 1; i < rasterEndeChoices.length; i++) {
@@ -209,7 +209,7 @@ function defineEndDialog(){
                         }
                     }
                 }
-    }   
+    }
 }
 
 function redefineVars(){
@@ -218,93 +218,93 @@ function redefineVars(){
 
     if (customSize){
 
-        pHeight = pHeight.editValue * 0.352778;
-        pWidth = pWidth.editValue * 0.352778;
+        pageHeight = pageHeight.editValue * 0.352778;
+        pageWidth = pageWidth.editValue * 0.352778;
 
     } else {
 
-        pWidth = allFormats[format.selectedIndex];
-        pHeight = Math.round(Math.sqrt(2) * pWidth);
+        pageWidth = allFormats[format.selectedIndex];
+        pageHeight = Math.round(Math.sqrt(2) * pageWidth);
 
         if (orientation.selectedIndex == 0)  {
             portrait = true;
         }
 
         if (portrait) {
-            if (pHeight < pWidth) {
-                var a = pHeight;
-                pHeight = pWidth;
-                pWidth = a;
+            if (pageHeight < pageWidth) {
+                var a = pageHeight;
+                pageHeight = pageWidth;
+                pageWidth = a;
             }
         } else {
-            if (pHeight > pWidth) {
-                var a = pHeight;
-                pHeight = pWidth;
-                pWidth = a;
+            if (pageHeight > pageWidth) {
+                var a = pageHeight;
+                pageHeight = pageWidth;
+                pageWidth = a;
             }
         }
     }
 
-    pHeight = Math.floor(pHeight);
-    pWidth = Math.floor(pWidth);
+    pageHeight = Math.floor(pageHeight);
+    pageWidth = Math.floor(pageWidth);
 
-    rasterAnfang = rasterAnfang.editValue * 0.352778;
-    rasterLinks = rasterLinks.editValue * 0.352778;
-    rasterRechts = rasterRechts.editValue * 0.352778;
+    upperPadding = upperPadding.editValue * 0.352778;
+    innerPadding = innerPadding.editValue * 0.352778;
+    outterPadding = outterPadding.editValue * 0.352778;
 
-    zeilen = zeilen.editValue;
-    spalten = spalten.editValue;
-    anzSpaltenProSpaltenAbstand = anzSpaltenProSpaltenAbstand.editValue;
+    numberOfRows = numberOfRows.editValue;
+    numberOfCollums = numberOfCollums.editValue;
+    rowsGutterWidthInLines = rowsGutterWidthInLines.editValue;
 
     gutterWidthDifferent = gutterWidthDifferent.checkedState;
-    zeilenAbstand = zeilenAbstand.editValue * 0.352778;
+    customColumnGutterWidth = customColumnGutterWidth.editValue * 0.352778;
 
     fontSize = fontSize.editValue;
-    rasterHoehe = rasterHoehe.editValue * 0.352778;
-    letterMsize = letterMsize.editValue * 0.352778;
+    baseLineGridHeight = baseLineGridHeight.editValue * 0.352778;
+    fontMsize = fontMsize.editValue * 0.352778;
 }
 
 
 function calcStuff(){
-    spaltenAbstand = (rasterHoehe - letterMsize) + (anzSpaltenProSpaltenAbstand * rasterHoehe);
+    spaltenAbstand = (baseLineGridHeight - fontMsize) + (rowsGutterWidthInLines * baseLineGridHeight);
     if (!gutterWidthDifferent) {
-        zeilenAbstand = spaltenAbstand;
+        customColumnGutterWidth = spaltenAbstand;
     }
 
     //find maximal rows:
 
-    while ((pHeight - rasterAnfang) > _height) {
+    while ((pageHeight - upperPadding) > _height) {
         x += 1;
-        zeilenHoehe = letterMsize + (x * rasterHoehe);
-        _height = (zeilen * zeilenHoehe) + ((zeilen - 1) * spaltenAbstand);
+        zeilenHoehe = fontMsize + (x * baseLineGridHeight);
+        _height = (numberOfRows * zeilenHoehe) + ((numberOfRows - 1) * spaltenAbstand);
     }
 
     xDef = x - 1;
 
-    zeilenHoehe = (letterMsize + (xDef * rasterHoehe));
-    _height = (zeilen * zeilenHoehe) + ((zeilen - 1) * spaltenAbstand);
+    zeilenHoehe = (fontMsize + (xDef * baseLineGridHeight));
+    _height = (numberOfRows * zeilenHoehe) + ((numberOfRows - 1) * spaltenAbstand);
 
-    rasterEnde = ((pHeight - _height) - rasterAnfang);
-    baseStart = (rasterAnfang - (rasterHoehe - letterMsize));
+    rasterEnde = ((pageHeight - _height) - upperPadding);
+    baseStart = (upperPadding - (baseLineGridHeight - fontMsize));
 
     rasterEndeChoices[0] = rasterEnde;
 }
 
 function calcAlternatives(i){
     x = xDef - i;
-    zeilenHoehe = (letterMsize + (x * rasterHoehe));
-    _height = (zeilen * zeilenHoehe) + ((zeilen - 1) * spaltenAbstand);
-    rasterEnde = ((pHeight - _height) - rasterAnfang);
-    baseStart = (rasterAnfang - (rasterHoehe - letterMsize));
+    zeilenHoehe = (fontMsize + (x * baseLineGridHeight));
+    _height = (numberOfRows * zeilenHoehe) + ((numberOfRows - 1) * spaltenAbstand);
+    rasterEnde = ((pageHeight - _height) - upperPadding);
+    baseStart = (upperPadding - (baseLineGridHeight - fontMsize));
     return rasterEnde;
 }
 
 function setValues(i){
     xDef -= i;
-    zeilenHoehe = (letterMsize + (xDef * rasterHoehe));
-    _height = (zeilen * zeilenHoehe) + ((zeilen - 1) * spaltenAbstand);
-    rasterEnde = ((pHeight - _height) - rasterAnfang);
-    baseStart = (rasterAnfang - (rasterHoehe - letterMsize));
+    zeilenHoehe = (fontMsize + (xDef * baseLineGridHeight));
+    _height = (numberOfRows * zeilenHoehe) + ((numberOfRows - 1) * spaltenAbstand);
+    rasterEnde = ((pageHeight - _height) - upperPadding);
+    baseStart = (upperPadding - (baseLineGridHeight - fontMsize));
 }
 
 function createPage(){
@@ -312,8 +312,8 @@ function createPage(){
     //Create a new document.
     var myDocument = app.documents.add();
     with(myDocument.documentPreferences) {
-        pageHeight = pHeight + "mm";
-        pageWidth = pWidth + "mm";
+        pageHeight = pageHeight + "mm";
+        pageWidth = pageWidth + "mm";
         if (portrait) {
             pageOrientation = PageOrientation.portrait;
         } else {
@@ -330,9 +330,9 @@ function createPage(){
         //columnGutter can be a number or a measurement string.
         //columnGutter = "1p";
         bottom = rasterEnde + "mm"
-        left = rasterLinks + "mm"
-        right = rasterRechts + "mm"
-        top = rasterAnfang + "mm"
+        left = innerPadding + "mm"
+        right = outterPadding + "mm"
+        top = upperPadding + "mm"
     }
 
     with(myMasterSpread.pages.item(1).marginPreferences) {
@@ -340,9 +340,9 @@ function createPage(){
         //columnGutter can be a number or a measurement string.
         //columnGutter = "1p";
         bottom = rasterEnde + "mm"
-        left = rasterLinks + "mm"
-        right = rasterRechts + "mm"
-        top = rasterAnfang + "mm"
+        left = innerPadding + "mm"
+        right = outterPadding + "mm"
+        top = upperPadding + "mm"
     }
 
     with(myMasterSpread) {
@@ -350,19 +350,19 @@ function createPage(){
         //column gutter,guide color, fit margins, remove existing, layer.
         //Note that the createGuides method does not take an RGB array
         //for the guide color parameter.
-        createGuides(zeilen, spalten, spaltenAbstand + "mm", zeilenAbstand + "mm", UIColors.pink, true, true, myDocument.layers.item(0));
+        createGuides(numberOfRows, numberOfCollums, spaltenAbstand + "mm", customColumnGutterWidth + "mm", UIColors.pink, true, true, myDocument.layers.item(0));
     }
 
     //add baseline grid:
     var myGridPreferences = myDocument.gridPreferences;
-    myGridPreferences.baselineDivision = rasterHoehe + "mm";
+    myGridPreferences.baselineDivision = baseLineGridHeight + "mm";
     myGridPreferences.baselineStart = baseStart + "mm";
     myGridPreferences.baselineGridShown = true;
 
     with(myDocument.textDefaults) {
         alignToBaseline = true;
         pointSize = fontSize;
-        leading = rasterHoehe;
+        leading = baseLineGridHeight;
     }
 }
 
@@ -385,7 +385,7 @@ if (startDialog.show() == true) {
 
         endDialog.destroy();
         startDialog.destroy();
-    
+
         createPage();
     } else {
         endDialog.destroy();
